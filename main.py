@@ -15,11 +15,12 @@ def find_mask(file_name):
         string = str(bin(a[i]))[2:]
         s+="0"*(8-len(string))
         s+=string
-    print(s)
+    f.close()
+    return s
 
 def choose_file():
     file_name = fd.askopenfilename()
-    find_mask(file_name)
+    mask = find_mask(file_name)
 
 root = Tk()
 root.resizable(width=False, height=False)

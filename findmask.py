@@ -12,5 +12,5 @@ def find_mask():
         string = str(bin(a[i]))[2:]
         s+="0"*(8-len(string))
         s+=string
-    print(s)
-find_mask()
+    f.close()
+    return s

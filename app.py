@@ -8,6 +8,7 @@ def choose_file():
     mb.showinfo("путь к файлу", file_name)
     print(file_name)
 
+
 root = Tk()
 root.resizable(width=False, height=False)
 text = Text(width=50, height=25)
