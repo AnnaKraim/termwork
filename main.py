@@ -10,15 +10,18 @@ def find_mask(file_name):
     f = open(file_name, 'rb')
     a = f.readline()
     a = list(map(int, a))
-    while not (a[0] == 49 and a[1] == 50 and a[2] == 52 and a[3] == 48):
+    s = ""
+    while not (a[0] == 49 and a[1] == 50 and a[2] == 52 and a[3] == 48) and len(a) > 4:
         a = f.readline()
         a = list(map(int, a))
-    a = a[4:20]
-    s = ""
-    for i in range(len(a)):
-        string = str(bin(a[i]))[2:]
-        s += "0" * (8 - len(string))
-        s += string
+        # print(a)
+    if (a[0] == 49 and a[1] == 50 and a[2] == 52 and a[3] == 48) and len(a) > 4:
+        a = a[4:20]
+        s = ""
+        for i in range(len(a)):
+            string = str(bin(a[i]))[2:]
+            s += "0" * (8 - len(string))
+            s += string
     f.close()
     return s
 
@@ -35,10 +38,14 @@ def check_name():
 def choose_file():
     file_name = fd.askopenfilename()
     if len(file_name) > 0:
+        # print(file_name)
         mask = find_mask(file_name)
+        if mask == "":
+            return -1
         name = check_name()
         create_xml(name)
-        parser(file_name, name)
+        if parser(file_name, name) == -1:
+            pass
 
 
 root = Tk()
