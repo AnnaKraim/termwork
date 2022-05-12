@@ -1,5 +1,7 @@
 from tkinter import *
 from tkinter import filedialog as fd
+from tkinter.filedialog import askdirectory
+
 from parsing import parser
 from XML_CREATOR import create_xml
 import os.path
@@ -14,7 +16,6 @@ def find_mask(file_name):
     while not (a[0] == 49 and a[1] == 50 and a[2] == 52 and a[3] == 48) and len(a) > 4:
         a = f.readline()
         a = list(map(int, a))
-        # print(a)
     if (a[0] == 49 and a[1] == 50 and a[2] == 52 and a[3] == 48) and len(a) > 4:
         a = a[4:20]
         s = ""
@@ -26,32 +27,51 @@ def find_mask(file_name):
     return s
 
 
-def check_name():
+def check_name(dst):
     i = 0
-    s = "final_file" + str(i) + ".xml"
+    s = dst + "/" + "final_file" + str(i) + ".xml"
     while os.path.exists(s):
         i += 1
-        s = "final_file" + str(i) + ".xml"
+        s = dst + "/" + "final_file" + str(i) + ".xml"
     return s
 
 
 def choose_file():
     file_name = fd.askopenfilename()
-    if len(file_name) > 0:
-        # print(file_name)
+    global dst
+    dst = askdirectory()
+    if len(file_name) > 0 and len(dst) > 0:
         mask = find_mask(file_name)
-        if mask == "":
-            return -1
-        name = check_name()
+        name = check_name(dst)
         create_xml(name)
+        if mask == "":
+            msg = "Не удалось выполнить обработку файла"
+            mb.showerror("Ошибка", msg)
+            os.remove(name)
+            return -1
         if parser(file_name, name) == -1:
-            pass
+            msg = "Не удалось выполнить обработку файла"
+            mb.showerror("Ошибка", msg)
+            os.remove(name)
+        else:
+            msg = "Обработка выполнена успешно"
+            mb.showinfo("Выполнено", msg)
+    else:
+        msg = "Не верно указаны директории"
+        mb.showerror("Ошибка", msg)
 
 
 root = Tk()
+root["bg"] = "DarkCyan"
+root.title("Обработка Клирингового Файла")
+w = root.winfo_screenwidth()
+h = root.winfo_screenheight()
+w = w//2
+h = h//2
+w = w - 200
+h = h - 300
+root.geometry('400x400+{}+{}'.format(w, h))
 root.resizable(width=False, height=False)
-text = Text(width=50, height=25)
-text.grid(columnspan=2)
-b1 = Button(text="Выбрать файл", command=choose_file)
-b1.place(x=100, y=40)
+b1 = Button(text="Выбрать файл для обработки", command=choose_file, height=3, width=30)
+b1.place(x=95, y=100)
 root.mainloop()

@@ -8,7 +8,10 @@ def params(number):
             def par1(data, position, name):
                 Add_S(name, "string")
                 # print("".join(list(map(chr, data[0:2]))))
-                a = int("".join(list(map(chr, data[position:position + 2]))))
+                a = "".join(list(map(chr, data[position:position + 2])))
+                if check_num(a) == -1:
+                    return -1
+                a = int(a)
                 if a > 19 or a < 1:
                     return -1
                 return a
@@ -268,7 +271,11 @@ def params(number):
         case 43:
             def par1(data, position, name):
                 a = list(map(chr, data[position:2 + position]))
+                if check_num(a) == -1:
+                    return -1
                 a = int(a[0] + a[1])
+                if a<20:
+                    return -1
                 # print("Длина", a, end=" ")
                 # print("".join(list(map(chr, data[position + 2:a + position + 2]))))
                 Add_P(name, "Card_acceptor_name_location", "".join(list(map(chr, data[position + 2:a + position + 2]))))
@@ -302,6 +309,8 @@ def params(number):
         case 55:
             def par1(data, position, name):
                 a = list(map(chr, data[position:3 + position]))
+                if check_num(a) == -1:
+                    return -1
                 a = int(a[0] + a[1] + a[2])
                 # print("Длина", a, end=" ")
                 # print("".join(list(map(chr, data[position + 3:a + position + 3]))))
@@ -327,6 +336,8 @@ def params(number):
         case 72:
             def par1(data, position, name):
                 a = list(map(chr, data[position:3 + position]))
+                if check_num(a) == -1:
+                    return -1
                 a = int(a[0] + a[1] + a[2])
                 # print("Длина", a, end=" ")
                 # print("".join(list(map(chr, data[position + 3:a + position + 3]))))
