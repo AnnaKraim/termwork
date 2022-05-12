@@ -1,9 +1,10 @@
 from tkinter import *
 from tkinter import filedialog as fd
 from tkinter.filedialog import askdirectory
-
 from parsing import parser
 from XML_CREATOR import create_xml
+
+import xml.etree.ElementTree as ET
 import os.path
 import tkinter.messagebox as mb
 
@@ -36,6 +37,16 @@ def check_name(dst):
     return s
 
 
+def sumcurrency(file_path):
+    tree = ET.parse(file_path)
+    root = tree.getroot()
+    s = 0
+    for i in range(len(root)):
+        s+=int(root[i][1].text)
+    root.text = 'Financial transaction 1240, Transactions summ: '+str(s)
+    tree.write(file_path)
+
+
 def choose_file():
     file_name = fd.askopenfilename()
     global dst
@@ -54,6 +65,7 @@ def choose_file():
             mb.showerror("Ошибка", msg)
             os.remove(name)
         else:
+            sumcurrency(name)
             msg = "Обработка выполнена успешно"
             mb.showinfo("Выполнено", msg)
     else:
